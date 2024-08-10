@@ -6,10 +6,14 @@
 enum class ScreenState {
     MAIN_MENU,
     GAME,
+    LOAD_MENU,
+    SAVE_MENU,
+    PAUSE_MENU,
     EXIT
 };
 
 void HandleMainMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& currentScreen);
 void HandleGameScreen(SDL_Renderer* renderer, SDL_Window* window, ScreenState& currentScreen);
+void HandleLoadMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& currentScreen);
 
 #endif // SCREEN_MANAGER_H

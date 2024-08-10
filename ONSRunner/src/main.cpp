@@ -43,6 +43,10 @@ int main(int argc, char* argv[]) {
                 HandleGameScreen(renderer, window, currentScreen);
                 currentScreen = ScreenState::MAIN_MENU;
                 break;
+            case ScreenState::LOAD_MENU:
+                HandleLoadMenu(renderer, window, currentScreen);
+                currentScreen = ScreenState::MAIN_MENU;
+                break;
             default:
                 currentScreen = ScreenState::EXIT;
                 break;

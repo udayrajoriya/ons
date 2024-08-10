@@ -6,12 +6,12 @@
 
 const int MENU_ITEMS = 5;
 
-void HandleMainMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& currentScreen) {
+void HandleLoadMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& currentScreen) {
     const char* fontPath = "assets/VT323-Regular.ttf";
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
-    const char* menuItems[MENU_ITEMS] = {"ONS RUNNER", "NEW GAME", "LOAD GAME", "OPTIONS", "EXIT"};
+    const char* menuItems[MENU_ITEMS] = {"LOAD GAME", "<SLOT EMPTY>", "<SLOT EMPTY>", "<SLOT EMPTY>", "GO BACK"};
     int selectedItem = 1;
     bool running = true;
     SDL_Event event;
@@ -36,13 +36,10 @@ void HandleMainMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& cur
                         break;
                     case SDLK_RETURN:
                         if (selectedItem == 4) {  // Exit option
-                            currentScreen = ScreenState::EXIT;
+                            currentScreen = ScreenState::MAIN_MENU;
                             running = false;
                         } else if (selectedItem == 1) {  // New Game option
-                            currentScreen = ScreenState::GAME;
-                            return;  // Exit the menu handling function to switch screens
-                        } else if (selectedItem == 2) {  // Load Game option
-                            currentScreen = ScreenState::LOAD_MENU;
+                            //currentScreen = ScreenState::GAME;
                             return;  // Exit the menu handling function to switch screens
                         }
                         break;
