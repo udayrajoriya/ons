@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${file}",
+                "src/utils.cpp",
+                "src/main_menu.cpp",
+                "src/game_screen.cpp",
+                "-I${workspaceFolder}/include",
+                "-L${workspaceFolder}/lib",
+                "-lmingw32",
+                "-lSDL2main",
+                "-lSDL2",
+                "-lSDL2_ttf",
+                "-o",
+                "distribute/${fileBasenameNoExtension}.exe",
+                "-mwindows",
+                "-static-libgcc",
+                "-static-libstdc++"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Generated task"
+        }
+    ]
+}

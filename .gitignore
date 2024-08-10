@@ -1,0 +1,7 @@
+ONSRunner/assets/*
+ONSRunner/distribute/*
+ONSRunner/include/SDL2/*
+ONSRunner/lib/*
+ONSRunner/bin/*
+*.dll
+*.exe
