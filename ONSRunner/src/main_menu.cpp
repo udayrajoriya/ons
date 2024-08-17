@@ -80,6 +80,8 @@ void HandleMainMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& cur
             RenderText(renderer, fontPath, menuItems[i], x, y, color, fontSize);
         }
 
+        RenderNavHelperText(windowWidth, windowHeight, fontPath, renderer, mainMenuNavText);
+
         SDL_RenderPresent(renderer);
     }
 }

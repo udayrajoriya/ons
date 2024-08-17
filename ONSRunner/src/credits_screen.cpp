@@ -11,6 +11,7 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
     SDL_Color color = {255, 255, 255};
+    SDL_Color navColor = {200, 200, 200};
 
     TTF_Font* font = TTF_OpenFont(fontPath, CalculateFontSize(windowWidth, windowHeight));
     if (!font) {
@@ -19,9 +20,9 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
     }
 
     std::string fullText = "Your text goes here...\nWhat is up you people?";
-    std::vector<std::string> lines = WrapText(fullText, font, windowWidth - 20);  // 20 pixels padding
+    std::vector<std::string> lines = WrapText(fullText, font, windowWidth - 20);
     size_t currentPage = 0;
-    size_t maxLinesPerPage = (windowHeight - 20) / (TTF_FontHeight(font) + 5);  // 5 pixels padding
+    size_t maxLinesPerPage = (windowHeight - 60) / (TTF_FontHeight(font) + 5);  // Adjust height to account for navigation text
 
     bool running = true;
     SDL_Event event;
@@ -40,9 +41,6 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
                     // Move to the next page if there is more text
                     if ((currentPage + 1) * maxLinesPerPage < lines.size()) {
                         ++currentPage;
-                    } else {
-                        //running = false;
-                        // currentScreen = ScreenState::MAIN_MENU;
                     }
                 }
             }
@@ -51,11 +49,14 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
+        // Render the credit text
         int y = 20;
         for (size_t i = currentPage * maxLinesPerPage; i < std::min((currentPage + 1) * maxLinesPerPage, lines.size()); ++i) {
             RenderText(renderer, fontPath, lines[i].c_str(), 10, y, color, TTF_FontHeight(font));
             y += TTF_FontHeight(font) + 5;  // 5 pixels padding between lines
         }
+
+        RenderNavHelperText(windowWidth, windowHeight, fontPath, renderer, creditsNavText);
 
         SDL_RenderPresent(renderer);
     }

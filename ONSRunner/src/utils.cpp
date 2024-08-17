@@ -4,6 +4,10 @@
 #include <vector>
 #include <string>
 
+std::string loadMenuNavText = "Use [Up]/[Down]/[W]/[S] Keys to navigate, [Enter] to select";
+std::string mainMenuNavText = "Use [Up]/[Down]/[W]/[S] Keys to navigate, [Enter] to select";
+std::string creditsNavText = "Use [Esc] to return to the Main Menu";
+
 void RenderText(SDL_Renderer* renderer, const char* fontPath, const char* text, int x, int y, SDL_Color color, int fontSize) {
     TTF_Font* font = TTF_OpenFont(fontPath, fontSize);
     if (!font) {
@@ -22,8 +26,24 @@ void RenderText(SDL_Renderer* renderer, const char* fontPath, const char* text, 
     TTF_CloseFont(font);
 }
 
+// Render the navigation text at the bottom
+void RenderNavHelperText(int windowWidth, int windowHeight, const char* fontPath, SDL_Renderer* renderer, std::string navText) {
+    int fontSizeScaleModifier = 30;
+    TTF_Font* font = TTF_OpenFont(fontPath, CalculateFontSize(windowWidth, windowHeight, fontSizeScaleModifier));
+    SDL_Color navColor = {200, 200, 200};
+    int navTextWidth, navTextHeight;
+    TTF_SizeText(font, navText.c_str(), &navTextWidth, &navTextHeight);
+    int navTextX = (windowWidth - navTextWidth) / 2;  // Center the text horizontally
+    int navTextY = windowHeight - navTextHeight - 10;  // 10 pixels from the bottom
+    RenderText(renderer, fontPath, navText.c_str(), navTextX, navTextY, navColor, TTF_FontHeight(font));
+}
+
 int CalculateFontSize(int windowWidth, int windowHeight) {
     return std::min(windowWidth, windowHeight) / 20;
+}
+
+int CalculateFontSize(int windowWidth, int windowHeight, int fontSizeScaleModifier) {
+    return std::min(windowWidth, windowHeight) / fontSizeScaleModifier;
 }
 
 // Function to break text into lines based on the width of the window
