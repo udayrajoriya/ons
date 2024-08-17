@@ -47,6 +47,10 @@ int main(int argc, char* argv[]) {
                 HandleLoadMenu(renderer, window, currentScreen);
                 currentScreen = ScreenState::MAIN_MENU;
                 break;
+            case ScreenState::CREDITS:
+                HandleCredits(renderer, window, currentScreen);
+                currentScreen = ScreenState::MAIN_MENU;
+                break;
             default:
                 currentScreen = ScreenState::EXIT;
                 break;

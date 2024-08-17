@@ -5,7 +5,7 @@
             "name": "g++ - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "distribute/${fileBasenameNoExtension}.exe",
+            "program": "${workspaceFolder}/distribute/main.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

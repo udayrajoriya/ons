@@ -23,4 +23,4 @@ Build Instructions
 16) If using VSCode to build, open the ".vscode/launch.json" file and update value of "miDebuggerPath" if MINGW is installed at a different location.
 17) Navigate to the src directory and open main.cpp in VSCode.
 18) Press Ctrl + Shift + B to build the project.
-19) To run the project, goto the distribute directory and execute the main.exe file.
+19) To run the project, goto the distribute directory and execute the main.exe file or alternatively from VS Code itself, press F5.

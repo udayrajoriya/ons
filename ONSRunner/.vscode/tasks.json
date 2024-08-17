@@ -11,6 +11,7 @@
                 "src/utils.cpp",
                 "src/main_menu.cpp",
                 "src/load_menu.cpp",
+                "src/credits_screen.cpp",
                 "src/game_screen.cpp",
                 "-I${workspaceFolder}/include",
                 "-L${workspaceFolder}/lib",

@@ -6,7 +6,7 @@
 #include "screen_manager.h"
 #include "utils.h"
 
-void HandleGameScreen(SDL_Renderer* renderer, SDL_Window* window, ScreenState& currentScreen) {
+void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& currentScreen) {
     const char* fontPath = "assets/VT323-Regular.ttf";
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
@@ -18,7 +18,7 @@ void HandleGameScreen(SDL_Renderer* renderer, SDL_Window* window, ScreenState& c
         return;
     }
 
-    std::string fullText = "Your text goes here...";
+    std::string fullText = "Your text goes here...\nWhat is up you people?";
     std::vector<std::string> lines = WrapText(fullText, font, windowWidth - 20);  // 20 pixels padding
     size_t currentPage = 0;
     size_t maxLinesPerPage = (windowHeight - 20) / (TTF_FontHeight(font) + 5);  // 5 pixels padding
