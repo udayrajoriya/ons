@@ -43,8 +43,13 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
                         ++currentPage;
                     }
                 }
+            } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
+                windowWidth = event.window.data1;
+                windowHeight = event.window.data2;
             }
         }
+
+        int fontSize = CalculateFontSize(windowWidth, windowHeight);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -52,7 +57,7 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
         // Render the credit text
         int y = 20;
         for (size_t i = currentPage * maxLinesPerPage; i < std::min((currentPage + 1) * maxLinesPerPage, lines.size()); ++i) {
-            RenderText(renderer, fontPath, lines[i].c_str(), 10, y, color, TTF_FontHeight(font));
+            RenderText(renderer, fontPath, lines[i].c_str(), 10, y, color, fontSize);
             y += TTF_FontHeight(font) + 5;  // 5 pixels padding between lines
         }
 
