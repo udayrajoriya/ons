@@ -38,9 +38,11 @@ void HandleLoadMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& cur
                         if (selectedItem == 4) {  // Exit option
                             currentScreen = ScreenState::MAIN_MENU;
                             running = false;
-                        } else if (selectedItem == 1) {  // New Game option
-                            //currentScreen = ScreenState::GAME;
-                            return;  // Exit the menu handling function to switch screens
+                        } else if (selectedItem>0 && selectedItem <4) {  // Load Game slot option
+                            if(menuItems[selectedItem]!="<SLOT EMPTY>") {
+                                currentScreen = ScreenState::GAME;
+                                return;  // Exit the LOAD menu handling function to switch screens
+                            }
                         }
                         break;
                 }

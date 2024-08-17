@@ -5,6 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <vector>
 #include <string>
+#include <sstream>
 
 extern std::string loadMenuNavText;
 extern std::string mainMenuNavText;

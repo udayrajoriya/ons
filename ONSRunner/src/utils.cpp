@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
 
 std::string loadMenuNavText = "Use [Up]/[Down]/[W]/[S] Keys to navigate, [Enter] to select";
 std::string mainMenuNavText = "Use [Up]/[Down]/[W]/[S] Keys to navigate, [Enter] to select";
@@ -15,14 +16,37 @@ void RenderText(SDL_Renderer* renderer, const char* fontPath, const char* text, 
         return;
     }
 
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    // Split the text into lines
+    std::string strText(text);
+    std::stringstream ss(strText);
+    std::string line;
+    int offsetY = 0;
 
-    SDL_Rect destRect = { x, y, surface->w, surface->h };
-    SDL_RenderCopy(renderer, texture, nullptr, &destRect);
+    while (std::getline(ss, line, '\n')) {
+        SDL_Surface* surface = TTF_RenderText_Solid(font, line.c_str(), color);
+        if (!surface) {
+            std::cerr << "TTF_RenderText_Solid Error: " << TTF_GetError() << std::endl;
+            TTF_CloseFont(font);
+            return;
+        }
 
-    SDL_FreeSurface(surface);
-    SDL_DestroyTexture(texture);
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+        if (!texture) {
+            std::cerr << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
+            SDL_FreeSurface(surface);
+            TTF_CloseFont(font);
+            return;
+        }
+
+        SDL_Rect destRect = { x, y + offsetY, surface->w, surface->h };
+        SDL_RenderCopy(renderer, texture, nullptr, &destRect);
+
+        offsetY += surface->h;  // Move the y position down for the next line
+
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
+    }
+
     TTF_CloseFont(font);
 }
 
@@ -50,33 +74,50 @@ int CalculateFontSize(int windowWidth, int windowHeight, int fontSizeScaleModifi
 std::vector<std::string> WrapText(const std::string& text, TTF_Font* font, int maxWidth) {
     std::vector<std::string> lines;
     std::string currentLine;
-    std::string word;
     size_t pos = 0;
 
     while (pos < text.size()) {
+        // Check for newline characters
+        if (text[pos] == '\n') {
+            if (!currentLine.empty()) {
+                lines.push_back(currentLine);
+                currentLine.clear();
+            }
+            lines.push_back("");  // Add an empty line to represent the newline character
+            ++pos;
+            continue;
+        }
+
         // Find the next space or end of text
         size_t nextSpace = text.find(' ', pos);
+        size_t nextNewLine = text.find('\n', pos);
 
         if (nextSpace == std::string::npos) nextSpace = text.size();
+        if (nextNewLine != std::string::npos && nextNewLine < nextSpace) nextSpace = nextNewLine;
 
-        word = text.substr(pos, nextSpace - pos);
-        pos = nextSpace + 1;
+        std::string word = text.substr(pos, nextSpace - pos);
+        pos = nextSpace;
 
+        if (pos < text.size() && text[pos] == ' ') {
+            ++pos; // Skip the space
+        }
+
+        // Check if adding the word would exceed maxWidth
         std::string testLine = currentLine.empty() ? word : currentLine + " " + word;
-
         int textWidth, textHeight;
         TTF_SizeText(font, testLine.c_str(), &textWidth, &textHeight);
 
         if (textWidth > maxWidth) {
             if (!currentLine.empty()) {
-                lines.push_back(currentLine);
+                lines.push_back(currentLine); // Push the current line
             }
-            currentLine = word;
+            currentLine = word; // Start a new line with the current word
         } else {
             currentLine = testLine;
         }
     }
 
+    // Push any remaining text in the current line to the vector
     if (!currentLine.empty()) {
         lines.push_back(currentLine);
     }

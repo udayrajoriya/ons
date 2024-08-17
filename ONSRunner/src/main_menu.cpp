@@ -11,7 +11,7 @@ void HandleMainMenu(SDL_Renderer* renderer, SDL_Window* window, ScreenState& cur
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
-    const char* menuItems[MENU_ITEMS] = {"ONS RUNNER", "NEW GAME", "ゲームをロード", "OPTIONS", "CREDITS", "EXIT"};
+    const char* menuItems[MENU_ITEMS] = {"ONS RUNNER", "NEW GAME", "LOAD GAME", "OPTIONS", "CREDITS", "EXIT"};
     int selectedItem = 1;
     bool running = true;
     SDL_Event event;

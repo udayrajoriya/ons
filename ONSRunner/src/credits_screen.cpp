@@ -19,7 +19,7 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
         return;
     }
 
-    std::string fullText = "Your text goes here...\nWhat is up you people?";
+    std::string fullText = "Developed by Uday Rajoriya\nMade with Orbital Narrative System";
     std::vector<std::string> lines = WrapText(fullText, font, windowWidth - 20);
     size_t currentPage = 0;
     size_t maxLinesPerPage = (windowHeight - 60) / (TTF_FontHeight(font) + 5);  // Adjust height to account for navigation text
@@ -56,9 +56,12 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
 
         // Render the credit text
         int y = 20;
+        
         for (size_t i = currentPage * maxLinesPerPage; i < std::min((currentPage + 1) * maxLinesPerPage, lines.size()); ++i) {
-            RenderText(renderer, fontPath, lines[i].c_str(), 10, y, color, fontSize);
-            y += TTF_FontHeight(font) + 5;  // 5 pixels padding between lines
+            int textWidth, textHeight;
+            TTF_SizeText(TTF_OpenFont(fontPath, fontSize), lines[i].c_str(), &textWidth, &textHeight);
+            RenderText(renderer, fontPath, lines[i].c_str(), ((windowWidth - textWidth) / 2), y, color, fontSize);
+            y += fontSize + 5;  // 5 pixels padding between lines
         }
 
         RenderNavHelperText(windowWidth, windowHeight, fontPath, renderer, creditsNavText);
