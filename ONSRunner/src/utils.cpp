@@ -9,6 +9,8 @@ std::string loadMenuNavText = "Use [Up]/[Down]/[W]/[S] Keys to navigate, [Enter]
 std::string mainMenuNavText = "Use [Up]/[Down]/[W]/[S] Keys to navigate, [Enter] to select";
 std::string creditsNavText = "Use [Esc] to return to the Main Menu";
 
+std::string engineCreditsText = "\nMade with Orbital Narrative System\nhttps://ons.com";
+
 void RenderText(SDL_Renderer* renderer, const char* fontPath, const char* text, int x, int y, SDL_Color color, int fontSize) {
     TTF_Font* font = TTF_OpenFont(fontPath, fontSize);
     if (!font) {

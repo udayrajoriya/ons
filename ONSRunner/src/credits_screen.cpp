@@ -19,7 +19,9 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
         return;
     }
 
-    std::string fullText = "Developed by Uday Rajoriya\nMade with Orbital Narrative System";
+
+    std::string fullText = "Developed by Uday Rajoriya";
+    fullText += engineCreditsText;
     std::vector<std::string> lines = WrapText(fullText, font, windowWidth - 20);
     size_t currentPage = 0;
     size_t maxLinesPerPage = (windowHeight - 60) / (TTF_FontHeight(font) + 5);  // Adjust height to account for navigation text
@@ -50,21 +52,28 @@ void HandleCredits(SDL_Renderer* renderer, SDL_Window* window, ScreenState& curr
         }
 
         int fontSize = CalculateFontSize(windowWidth, windowHeight);
-
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        // Render the credit text
-        int y = 20;
-        
-        for (size_t i = currentPage * maxLinesPerPage; i < std::min((currentPage + 1) * maxLinesPerPage, lines.size()); ++i) {
-            int textWidth, textHeight;
-            TTF_SizeText(TTF_OpenFont(fontPath, fontSize), lines[i].c_str(), &textWidth, &textHeight);
-            RenderText(renderer, fontPath, lines[i].c_str(), ((windowWidth - textWidth) / 2), y, color, fontSize);
-            y += fontSize + 5;  // 5 pixels padding between lines
+        // Calculate the total height of the text block for the current page
+        int totalTextHeight = 0;
+        size_t linesOnPage = std::min(maxLinesPerPage, lines.size() - currentPage * maxLinesPerPage);
+        for (size_t i = 0; i < linesOnPage; ++i) {
+            totalTextHeight += TTF_FontHeight(font) + 5;  // Include padding between lines
         }
 
-        RenderNavHelperText(windowWidth, windowHeight, fontPath, renderer, creditsNavText);
+        // Calculate the starting y position to center the text block vertically
+        int y = (windowHeight - totalTextHeight) / 2;
+
+        // Render the credit text
+        for (size_t i = currentPage * maxLinesPerPage; i < currentPage * maxLinesPerPage + linesOnPage; ++i) {
+            int textWidth;
+            TTF_SizeText(TTF_OpenFont(fontPath, fontSize), lines[i].c_str(), &textWidth, nullptr);
+            RenderText(renderer, fontPath, lines[i].c_str(), (windowWidth - textWidth) / 2, y, color, fontSize);
+            y += TTF_FontHeight(font) + 5;  // 5 pixels padding between lines
+        }
+
+        RenderNavHelperText(windowWidth, windowHeight, fontPath, renderer, "Press ENTER to continue...");
 
         SDL_RenderPresent(renderer);
     }

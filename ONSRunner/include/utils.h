@@ -6,10 +6,14 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <chrono>
+#include <thread>
 
 extern std::string loadMenuNavText;
 extern std::string mainMenuNavText;
 extern std::string creditsNavText;
+
+extern std::string engineCreditsText;
 
 void RenderText(SDL_Renderer* renderer, const char* fontPath, const char* text, int x, int y, SDL_Color color, int fontSize);
 void RenderNavHelperText(int windowWidth, int windowHeight, const char* fontPath, SDL_Renderer* renderer, std::string navText);
